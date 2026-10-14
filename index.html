@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kralj Čačka</title>
+<meta name="description" content="Kralj Čačka — kantautor i slikar. Vesti, muzika, tekstovi i slikarstvo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Barlow+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout: jedan ekran, bez skrolovanja. Fotografija po celoj visini u sredini, crni prelivi levo/desno,
+   logo gore levo (1/4 visine), mreža 2x2 u centru (~60% visine), BIO + mreže dole desno. */
+:root{
+  --black:#050505;
+  --ink:#111112;          /* tamno siva */
+  --graphite:#1f1f21;     /* srednje tamna */
+  --ash:#8a8a8c;          /* svetlija siva */
+  --bone:#e4e3df;         /* najsvetlija siva za tekst */
+  --line:rgba(228,227,223,.18);
+  --tile-alpha:.25;       /* 75% transparentnosti */
+  --gap:15px;
+  --display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --util:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --grid:min(60vh, 60vw);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--black);color:var(--bone);
+  font-family:var(--util);overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid var(--bone);outline-offset:4px}
+
+.stage{position:relative;width:100%;height:100%;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 40%, var(--ink) 0%, var(--black) 70%)}
+
+/* Pozadinska fotografija */
+.photo{
+  position:absolute;top:0;left:50%;height:100%;aspect-ratio:1/1;max-width:none;
+  transform:translateX(-50%);
+  background:url("img/hero.jpg") center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 26%,#000 74%,transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0%,#000 26%,#000 74%,transparent 100%);
+  filter:grayscale(.15) contrast(1.05);
+}
+/* dodatno zatamnjenje rubova i dna da sve ostane mekano */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,var(--black) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,var(--black) 100%),
+    linear-gradient(180deg,rgba(5,5,5,.35) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 65%,rgba(5,5,5,.85) 100%);
+}
+
+/* Logo */
+.logo{position:absolute;z-index:3;
+  top:calc(3vh + env(safe-area-inset-top,0px));
+  left:max(3vw, calc(16px + env(safe-area-inset-left,0px)));
+  height:25vh;display:block}
+.logo img{height:100%;width:auto;max-width:none;display:block}
+
+/* Mreža 2x2 */
+.grid{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:var(--grid);height:var(--grid);
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--gap)}
+.tile{position:relative;display:block;container-type:inline-size;aspect-ratio:1/1;max-width:100%;overflow:hidden;isolation:isolate}
+.tile .ph{position:absolute;inset:0;z-index:-1;opacity:var(--tile-alpha);
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 1px,transparent 1px 14px),
+    linear-gradient(160deg,var(--graphite),var(--ink) 60%,var(--black));
+  transition:opacity .35s ease, transform .6s ease}
+.tile::after{content:"";position:absolute;inset:0;border:1px solid var(--line);pointer-events:none;transition:border-color .35s}
+.tile .label{position:absolute;left:7%;bottom:6%;right:7%;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  font-size:13cqi;line-height:.9;letter-spacing:.03em;white-space:nowrap;
+  color:var(--bone);text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.tile .pic{position:absolute;inset:0;z-index:-1;opacity:0;background:center/cover no-repeat;filter:grayscale(1) contrast(1.08);transition:opacity .45s ease, transform .8s ease;transform:scale(1.04)}
+.tile:hover .pic,.tile:focus-visible .pic{opacity:.9;transform:scale(1)}
+.tile:hover .ph,.tile:focus-visible .ph{opacity:.55;transform:scale(1.03)}
+.tile:hover::after,.tile:focus-visible::after{border-color:rgba(228,227,223,.5)}
+
+/* Dole desno: BIO + mreže */
+.corner{position:absolute;z-index:3;
+  right:max(3vw, calc(16px + env(safe-area-inset-right,0px)));
+  bottom:calc(4vh + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.bio{display:inline-flex;align-items:center;gap:.35em;
+  font-family:var(--display);font-weight:800;font-size:clamp(34px,6vh,64px);line-height:.85;letter-spacing:.04em;color:var(--bone)}
+.bio svg{width:.8em;height:.8em;transition:transform .3s ease}
+.bio:hover svg,.bio:focus-visible svg{transform:translateX(.18em)}
+.bio small{display:block;font-family:var(--util);font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--ash);text-align:right;margin-bottom:6px}
+.links{display:flex;flex-direction:column;align-items:stretch;gap:10px;--ic:clamp(26px,3.6vh,36px)}
+.links .tag{text-align:right}
+.row{display:flex;justify-content:space-between;gap:14px}
+.row a{width:var(--ic);height:var(--ic);display:block;color:var(--ash);transition:color .25s,transform .25s}
+.row a:hover,.row a:focus-visible{color:var(--bone);transform:translateY(-2px)}
+.row svg{width:100%;height:100%;display:block;fill:currentColor}
+.tag{font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:#5a5a5c}
+
+/* Ulazna animacija */
+@media (prefers-reduced-motion:no-preference){
+  .photo{animation:fade 1.6s ease both}
+  .logo{animation:rise .9s .2s ease both}
+  .tile{animation:rise .8s ease both}
+  .tile:nth-child(1){animation-delay:.35s}.tile:nth-child(2){animation-delay:.45s}
+  .tile:nth-child(3){animation-delay:.55s}.tile:nth-child(4){animation-delay:.65s}
+  .corner{animation:rise .8s .8s ease both}
+}
+@keyframes fade{from{opacity:.2}to{opacity:1}}
+@keyframes rise{from{opacity:.15;translate:0 12px}to{opacity:1;translate:0 0}}
+
+/* Uski / portretni ekrani */
+@media (max-aspect-ratio:1/1){
+  :root{--grid:min(52vh, calc(100vw - 32px))}
+  .logo{height:17vh}
+  .grid{top:calc(50% + 2vh)}
+  .corner{flex-direction:row;align-items:flex-end;gap:16px;bottom:calc(2vh + env(safe-area-inset-bottom,0px))}
+  .bio{font-size:clamp(28px,5vh,44px)}
+  .tag{display:none}
+}
+@media (max-aspect-ratio:1/1) and (max-width:560px){
+  .grid{top:calc(22vh + env(safe-area-inset-top,0px));bottom:calc(12vh + env(safe-area-inset-bottom,0px));height:auto;transform:translateX(-50%);
+    grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:10px}
+  .tile{aspect-ratio:auto}
+  .tile .label{font-size:10cqi;bottom:auto;top:50%;transform:translateY(-50%)}
+  .corner{left:max(16px,env(safe-area-inset-left,0px));justify-content:space-between}
+  .links{align-items:flex-end}
+  .links{--ic:24px}
+  .row{gap:14px}
+}
+@media (max-height:520px) and (min-aspect-ratio:1/1){
+  .corner{gap:8px}.tag{display:none}
+}
+</style>
+
+</head>
+<body>
+<main class="stage">
+  <div class="photo" role="img" aria-label="Kralj Čačka na sceni"></div>
+  <div class="shade"></div>
+
+  <a class="logo" href="./" aria-label="Kralj Čačka — naslovna">
+    <img src="img/logo.webp" alt="Kralj Čačka">
+  </a>
+
+  <nav class="grid" aria-label="Glavne sekcije">
+    <a class="tile" href="#vesti"><span class="ph"></span><span class="pic" style="background-image:url(img/vesti.jpg)"></span><span class="label">Vesti</span></a>
+    <a class="tile" href="#muzika"><span class="ph"></span><span class="pic" style="background-image:url(img/muzika.jpg)"></span><span class="label">Muzika</span></a>
+    <a class="tile" href="#tekstovi"><span class="ph"></span><span class="pic" style="background-image:url(img/tekstovi.jpg)"></span><span class="label">Tekstovi</span></a>
+    <a class="tile" href="#slikarstvo"><span class="ph"></span><span class="pic" style="background-image:url(img/slikarstvo.jpg)"></span><span class="label">Slikarstvo</span></a>
+  </nav>
+
+  <aside class="corner">
+    <a class="bio" href="#bio"><span><small>BIOGRAFIJA</small>BIO</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg>
+    </a>
+    <div class="links">
+      <span class="tag">Mreže</span>
+      <div class="row">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></a>
+        <a href="https://www.patreon.com/" target="_blank" rel="noopener" aria-label="Patreon" title="Patreon"><svg viewBox="0 0 24 24"><path d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z"/></svg></a>
+      </div>
+      <span class="tag">Slušaj</span>
+      <div class="row">
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="https://open.spotify.com/" target="_blank" rel="noopener" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a>
+        <a href="https://music.apple.com/" target="_blank" rel="noopener" aria-label="Apple Music" title="Apple Music"><svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026-.747.043-1.49.123-2.193.4-1.336.53-2.3 1.452-2.865 2.78-.192.448-.292.925-.363 1.408-.056.392-.088.785-.1 1.18 0 .032-.007.062-.01.093v12.223c.01.14.017.283.027.424.05.815.154 1.624.497 2.373.65 1.42 1.738 2.353 3.234 2.801.42.127.856.187 1.293.228.555.053 1.11.06 1.667.06h11.03a12.5 12.5 0 001.57-.1c.822-.106 1.596-.35 2.295-.81a5.046 5.046 0 001.88-2.207c.186-.42.293-.87.37-1.324.113-.675.138-1.358.137-2.04-.002-3.8 0-7.595-.003-11.393zm-6.423 3.99v5.712c0 .417-.058.827-.244 1.206-.29.59-.76.962-1.388 1.14-.35.1-.706.157-1.07.173-.95.045-1.773-.6-1.943-1.536a1.88 1.88 0 011.038-2.022c.323-.16.67-.25 1.018-.324.378-.082.758-.153 1.134-.24.274-.063.457-.23.51-.516a.904.904 0 00.02-.193c0-1.815 0-3.63-.002-5.443a.725.725 0 00-.026-.185c-.04-.15-.15-.243-.304-.234-.16.01-.318.035-.475.066-.76.15-1.52.303-2.28.456l-2.325.47-1.374.278c-.016.003-.032.01-.048.013-.277.077-.377.203-.39.49-.002.042 0 .086 0 .13-.002 2.602 0 5.204-.003 7.805 0 .42-.047.836-.215 1.227-.278.64-.77 1.04-1.434 1.233-.35.1-.71.16-1.075.172-.96.036-1.755-.6-1.92-1.544-.14-.812.23-1.685 1.154-2.075.357-.15.73-.232 1.108-.31.287-.06.575-.116.86-.177.383-.083.583-.323.6-.714v-.15c0-2.96 0-5.922.002-8.882 0-.123.013-.25.042-.37.07-.285.273-.448.546-.518.255-.066.515-.112.774-.165.733-.15 1.466-.296 2.2-.444l2.27-.46c.67-.134 1.34-.27 2.01-.403.22-.043.442-.088.663-.106.31-.025.523.17.554.482.008.073.012.148.012.223.002 1.91.002 3.822 0 5.732z"/></svg></a>
+      </div>
+    </div>
+  </aside>
+</main>
+</body>
+</html>
