@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tekstovi Kralja Čačka</title>
+<meta name="description" content="Tekstovi pesama Kralja Čačka sa albuma Zemlja snova (2016) i Spusti svetlost na put (2019).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Barlow+Condensed:wght@400;500;600&family=Barlow:wght@400;500&display=swap">
+<style>
+/* Layout: fiksna monohromna pozadina (ista fotografija kao na naslovnoj, -30%).
+   Leva 1/3: logo + meni, ispod harmonika sa albumima (sticky, ne skroluje se sa stranom).
+   Desna 2/3: tekst izabrane pesme. BIO + mreže fiksno dole desno. Telefon: jedna kolona, tekst se otvara ispod pesme. */
+:root{
+  --black:#050505;
+  --ink:#111112;
+  --graphite:#1f1f21;
+  --ash:#8a8a8c;
+  --mist:#b9b8b4;
+  --bone:#e4e3df;
+  --line:rgba(228,227,223,.14);
+  --line-strong:rgba(228,227,223,.38);
+  --display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --util:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --text:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --top:calc(3vh + env(safe-area-inset-top,0px));
+  --gutter-l:max(16px, 3vw, env(safe-area-inset-left,0px));
+  --gutter-r:max(16px, 3vw, env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--black)}
+body{margin:0;background:var(--black);color:var(--bone);font-family:var(--util);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+a:focus-visible,button:focus-visible{outline:2px solid var(--bone);outline-offset:4px}
+
+/* Fiksna pozadina — ne pomera se pri skrolovanju */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%, var(--ink) 0%, var(--black) 70%)}
+.photo{position:absolute;top:0;left:50%;height:100%;aspect-ratio:1/1;max-width:none;transform:translateX(-50%);
+  background:url("img/hero.jpg") center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 26%,#000 74%,transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0%,#000 26%,#000 74%,transparent 100%);
+  filter:grayscale(1) contrast(1.05) brightness(.7)}
+.shade{position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,var(--black) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,var(--black) 100%),
+    linear-gradient(180deg,rgba(5,5,5,.35) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 65%,rgba(5,5,5,.85) 100%)}
+
+/* Osnovni raspored 1/3 + 2/3 */
+.page{position:relative;z-index:1;display:grid;grid-template-columns:1fr 2fr;min-height:100vh;
+  padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+
+/* Leva kolona */
+.side{position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--graphite) transparent;
+  padding-block:var(--top) 5vh;padding-right:clamp(16px,2.5vw,40px);
+  display:flex;flex-direction:column;gap:clamp(18px,3.5vh,36px);min-width:0;container-type:inline-size}
+.head{display:flex;align-items:center;gap:clamp(18px,2.2vw,36px)}
+.logo{display:block;height:25vh;flex:none}
+.logo img{height:100%;width:auto;max-width:none;display:block}
+.menu{display:flex;flex-direction:column;gap:.15em;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  font-size:min(3.3vh, 8cqi);line-height:1}
+.menu a{display:inline-flex;align-items:center;gap:.4em;color:var(--ash);padding-block:.12em;transition:color .25s}
+.menu a::before{content:"";width:0;height:2px;background:currentColor;transition:width .3s ease}
+.menu a:hover,.menu a:focus-visible{color:var(--bone)}
+.menu a:hover::before,.menu a:focus-visible::before{width:.6em}
+
+.intro h1{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  font-size:min(5.5vh, 15cqi);line-height:.9}
+.intro p{margin:.45em 0 0;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ash)}
+
+/* Harmonika */
+.albums{display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
+.album{border-top:1px solid var(--line)}
+.album{--cover:clamp(56px, 24cqi, 120px)}
+.album-head{width:100%;display:grid;grid-template-columns:var(--cover) 1fr auto;align-items:center;gap:clamp(12px,1.4vw,22px);
+  padding-block:14px}
+.album-head img{width:var(--cover);height:var(--cover);max-width:100%;object-fit:cover;display:block;
+  filter:grayscale(1) brightness(.75);transition:filter .5s ease, transform .5s ease}
+.album-head:hover img{filter:grayscale(.6) brightness(.95)}
+.album.open .album-head img{filter:none}
+.album-meta{min-width:0}
+.album-meta strong{display:block;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  font-size:clamp(17px,6.2cqi,28px);line-height:.95;text-wrap:balance;color:var(--mist);transition:color .25s}
+.album.open .album-meta strong,.album-head:hover .album-meta strong{color:var(--bone)}
+.album-meta span{display:block;margin-top:6px;font-size:13px;font-weight:500;letter-spacing:clamp(.08em,.6cqi,.2em);text-transform:uppercase;color:var(--ash)}
+.chev{width:22px;height:22px;color:var(--ash);transition:transform .4s ease,color .25s}
+.album.open .chev{transform:rotate(180deg);color:var(--bone)}
+
+.songs-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease}
+.album.open .songs-wrap{grid-template-rows:1fr}
+.songs-wrap > div{overflow:hidden;min-height:0}
+.songs{list-style:none;margin:0;padding:2px 0 16px}
+.song{display:flex;align-items:center;gap:.6em;width:100%;padding:6px 0;
+  font-size:clamp(15px,4.6cqi,19px);font-weight:500;letter-spacing:.02em;line-height:1.2;color:var(--ash);transition:color .2s}
+.song::before{content:"";flex:none;width:8px;height:1px;background:var(--line-strong);transition:width .3s ease, background .3s}
+.song:hover,.song:focus-visible{color:var(--mist)}
+.song[aria-current="true"]{color:var(--bone)}
+.song[aria-current="true"]::before{width:22px;background:var(--bone)}
+
+/* Desna kolona: tekst pesme */
+.main{min-width:0;container-type:inline-size;
+  padding-top:calc(var(--top) + 1vh);padding-bottom:20vh;
+  padding-left:clamp(16px,4vw,72px);padding-right:clamp(150px,16vw,250px)}
+.lyric{max-width:68ch;text-shadow:0 1px 14px rgba(0,0,0,.85)}
+.lyric.swap{animation:swap .45s ease both}
+@keyframes swap{from{opacity:.25;translate:0 8px}to{opacity:1;translate:0 0}}
+.eyebrow{margin:0 0 .9em;font-size:13px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--ash)}
+.lyric h2{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;
+  font-size:clamp(40px,7.5vh,88px);line-height:.9;text-wrap:balance}
+.rule{width:56px;height:2px;background:var(--bone);margin:clamp(20px,3.5vh,34px) 0}
+.verses{font-family:var(--text);font-size:clamp(16px,1.2vw,19px);line-height:1.6;color:var(--bone)}
+.verses p{margin:0 0 1.25em;break-inside:avoid}
+@container (min-width:560px){ .verses.long{columns:2;column-gap:clamp(28px,4cqi,64px)} }
+
+/* BIO + mreže: fiksno dole desno, kao na naslovnoj */
+.corner{position:fixed;z-index:3;
+  right:max(3vw, calc(16px + env(safe-area-inset-right,0px)));
+  bottom:calc(4vh + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.bio{display:inline-flex;align-items:center;gap:.35em;
+  font-family:var(--display);font-weight:800;font-size:clamp(34px,6vh,64px);line-height:.85;letter-spacing:.04em;color:var(--bone)}
+.bio svg{width:.8em;height:.8em;transition:transform .3s ease}
+.bio:hover svg,.bio:focus-visible svg{transform:translateX(.18em)}
+.bio small{display:block;font-family:var(--util);font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--ash);text-align:right;margin-bottom:6px}
+.links{display:flex;flex-direction:column;align-items:stretch;gap:10px;--ic:clamp(26px,3.6vh,36px)}
+.links .tag{text-align:right}
+.row{display:flex;justify-content:space-between;gap:14px}
+.row a{width:var(--ic);height:var(--ic);display:block;color:var(--ash);transition:color .25s,transform .25s}
+.row a:hover,.row a:focus-visible{color:var(--bone);transform:translateY(-2px)}
+.row svg{width:100%;height:100%;display:block;fill:currentColor}
+.tag{font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:#5a5a5c}
+.fade-bottom{position:fixed;left:0;right:0;bottom:0;height:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(5,5,5,0),var(--black) 70%)}
+
+@media (prefers-reduced-motion:no-preference){
+  .photo{animation:fade 1.6s ease both}
+  .head,.intro,.albums{animation:rise .8s ease both}
+  .intro{animation-delay:.1s}.albums{animation-delay:.2s}
+  .main{animation:rise .8s .3s ease both}
+  .corner{animation:rise .8s .5s ease both}
+}
+@media (prefers-reduced-motion:reduce){
+  .lyric.swap{animation:none}
+  .songs-wrap,.chev,.album-head img{transition:none}
+}
+@keyframes fade{from{opacity:.2}to{opacity:1}}
+@keyframes rise{from{opacity:.15;translate:0 12px}to{opacity:1;translate:0 0}}
+
+/* Portretni ekrani (tablet): BIO i mreže u redu na dnu */
+@media (max-aspect-ratio:1/1){
+  .logo{height:17vh}
+  .corner{flex-direction:row;align-items:flex-end;gap:16px;bottom:calc(2vh + env(safe-area-inset-bottom,0px))}
+  .bio{font-size:clamp(28px,5vh,44px)}
+  .tag{display:none}
+  .main{padding-right:0;padding-bottom:18vh}
+  .side{padding-bottom:14vh}
+  .fade-bottom{height:16vh}
+}
+@media (max-height:560px) and (min-aspect-ratio:1/1){ .corner{gap:8px}.tag{display:none} }
+
+/* Telefon: jedna kolona, tekst se otvara ispod naziva pesme */
+@media (max-width:700px){
+  .page{grid-template-columns:1fr}
+  .side{position:static;height:auto;overflow:visible;padding-right:0;padding-bottom:calc(16vh + env(safe-area-inset-bottom,0px))}
+  .main{display:none}
+  .menu{font-size:clamp(20px,6vw,28px)}
+  .album{--cover:76px}
+  .menu{font-size:clamp(20px,6vw,28px)}
+  .intro h1{font-size:clamp(36px,11vw,52px)}
+  .album-meta strong{font-size:22px}
+  .song{font-size:18px;padding:9px 0}
+  .songs .lyric{padding:6px 0 22px 30px}
+  .songs .lyric h2,.songs .lyric .eyebrow{display:none}
+  .songs .rule{width:32px;margin:6px 0 16px}
+  .songs .verses{font-size:16px}
+  .corner{left:max(16px,env(safe-area-inset-left,0px));justify-content:space-between}
+  .links{--ic:24px}
+}
+</style>
+
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div class="photo"></div><div class="shade"></div></div>
+
+<div class="page">
+  <aside class="side">
+    <div class="head">
+      <a class="logo" href="./" aria-label="Kralj Čačka — naslovna"><img src="img/logo.webp" alt="Kralj Čačka"></a>
+      <nav class="menu" aria-label="Sekcije">
+        <a href="vesti.html">Vesti</a>
+        <a href="muzika.html">Muzika</a>
+        <a href="slikarstvo.html">Slikarstvo</a>
+      </nav>
+    </div>
+
+    <div class="intro">
+      <h1>Tekstovi</h1>
+      <p id="count">2 albuma · 24 pesme</p>
+    </div>
+
+    <div class="albums" id="albums"></div>
+  </aside>
+
+  <main class="main" id="main">
+    <article class="lyric" id="lyric" aria-live="polite"></article>
+  </main>
+</div>
+
+<div class="fade-bottom" aria-hidden="true"></div>
+<aside class="corner">
+    <a class="bio" href="bio.html"><span><small>BIOGRAFIJA</small>BIO</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg>
+    </a>
+    <div class="links">
+      <span class="tag">Mreže</span>
+      <div class="row">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></a>
+        <a href="https://www.patreon.com/" target="_blank" rel="noopener" aria-label="Patreon" title="Patreon"><svg viewBox="0 0 24 24"><path d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z"/></svg></a>
+      </div>
+      <span class="tag">Slušaj</span>
+      <div class="row">
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="https://open.spotify.com/" target="_blank" rel="noopener" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a>
+        <a href="https://music.apple.com/" target="_blank" rel="noopener" aria-label="Apple Music" title="Apple Music"><svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026-.747.043-1.49.123-2.193.4-1.336.53-2.3 1.452-2.865 2.78-.192.448-.292.925-.363 1.408-.056.392-.088.785-.1 1.18 0 .032-.007.062-.01.093v12.223c.01.14.017.283.027.424.05.815.154 1.624.497 2.373.65 1.42 1.738 2.353 3.234 2.801.42.127.856.187 1.293.228.555.053 1.11.06 1.667.06h11.03a12.5 12.5 0 001.57-.1c.822-.106 1.596-.35 2.295-.81a5.046 5.046 0 001.88-2.207c.186-.42.293-.87.37-1.324.113-.675.138-1.358.137-2.04-.002-3.8 0-7.595-.003-11.393zm-6.423 3.99v5.712c0 .417-.058.827-.244 1.206-.29.59-.76.962-1.388 1.14-.35.1-.706.157-1.07.173-.95.045-1.773-.6-1.943-1.536a1.88 1.88 0 011.038-2.022c.323-.16.67-.25 1.018-.324.378-.082.758-.153 1.134-.24.274-.063.457-.23.51-.516a.904.904 0 00.02-.193c0-1.815 0-3.63-.002-5.443a.725.725 0 00-.026-.185c-.04-.15-.15-.243-.304-.234-.16.01-.318.035-.475.066-.76.15-1.52.303-2.28.456l-2.325.47-1.374.278c-.016.003-.032.01-.048.013-.277.077-.377.203-.39.49-.002.042 0 .086 0 .13-.002 2.602 0 5.204-.003 7.805 0 .42-.047.836-.215 1.227-.278.64-.77 1.04-1.434 1.233-.35.1-.71.16-1.075.172-.96.036-1.755-.6-1.92-1.544-.14-.812.23-1.685 1.154-2.075.357-.15.73-.232 1.108-.31.287-.06.575-.116.86-.177.383-.083.583-.323.6-.714v-.15c0-2.96 0-5.922.002-8.882 0-.123.013-.25.042-.37.07-.285.273-.448.546-.518.255-.066.515-.112.774-.165.733-.15 1.466-.296 2.2-.444l2.27-.46c.67-.134 1.34-.27 2.01-.403.22-.043.442-.088.663-.106.31-.025.523.17.554.482.008.073.012.148.012.223.002 1.91.002 3.822 0 5.732z"/></svg></a>
+      </div>
+    </div>
+  </aside>
+
+<script type="application/json" id="data">[{"title": "Zemlja snova", "year": 2016, "songs": [{"title": "Zemlja snova", "stanzas": [["U ovo podmuklo doba", "Gradom se šetamo mi", "Treba nam zemlja", "Da java postanu sni"], ["Sve će se doznati tajne", "Kad fanfara začuješ zvuk", "Šansa za bolje dane", "Za sad nam se nudi kroz muk"], ["Vodi me u zemlju snova", "Ali tamo gde srećni su svi", "Zajedno u zemlju snova", "Idemo ja i ti"], ["Vodi me u zemlju snova", "Ali tamo gde srećni su svi", "Svi zajedno u zemlju snova", "Idemo ja i ti"], ["Jutro se budi sa sumnjom", "Kako će proteći dan", "A noć ti poruku šalje", "Da odsanjaš novi san"], ["Vodi me u zemlju snova", "Na nebu mesec sja žut", "Sa verom da za nas dvoje", "Postoji pravi put"]]}, {"title": "Pomoć prijatelja", "stanzas": [["Najlakše je", "Spavati po ceo dan", "I sklanjati", "Sebe samog od sebe svog"], ["Jer teško je", "Ostati budan svaki tren", "U mislima", "Kad mržnja želi da si njen"], ["Pokreni se", "I čuvaj se", "Da zauvek", "Ne izgubiš", "Snove sve", "Jer ovde je sve", "Baš sve na prodaju", "Zajedno ljubav i mržnja", "Idu na licitaciju"], ["Ajd’ ustani", "Znam problemi vole svaki tren", "Isto i ja", "Padam sto tri puta na dan"], ["Al’ ustajem", "Kada vidim da smo mi", "U slabosti", "Jedno drugom potrebni"], ["Pokreni se", "I čuvaj se", "Da zauvek", "Ne izgubiš", "Snove sve", "Jer ovde je sve", "Baš sve na prodaju", "Zajedno ljubav i mržnja", "Idu na licitaciju"], ["Ne plačem ja", "Da bih suzu pustio", "Plačem ja", "Da bih zlo potopio"], ["U suzama", "Svaki vrag vidi svoj kraj", "Sa suzama", "Svakom zlu dolazi kraj"], ["Pokreni se", "Al’ čuvaj se", "Da zauvek ne izgubiš", "Snove sve", "Jer ovde je sve", "Baš sve na prodaju", "Zajedno Ijubav i mržnja", "Idu na Iicitaciju"], ["Okreni se", "I čuvaj se", "Da zauvek ne izgubiš", "Snove sve", "Jer ovde je sve", "Baš sve na prodaju", "Zajedno ljubav i mržnja", "Idu na licitaciju"]]}, {"title": "Konac nam je pretanak", "stanzas": [["Konac nam je pretanak", "Kanap debeo i dug", "Prodavcu nije bitno", "Da l’ si gospodin iIi drug"], ["Kol’ko košta čekić stari", "Šraf, konopac i pečati", "Ma daj mi sve", "Za banki pet"], ["Nepotrebne smešne stvari", "Proći će kroz mozak mali", "U kanti sam ih našao", "A ti sad vidi šta ćeš s tim"], ["Konac nam je pretanak", "Kanap debeo i dug"], ["Džepovi su prazni", "A ljutnja oblači svoj frak", "Naša prijateljstva", "Nestaju za čas"], ["I dečije igre", "Smešne stvari", "Ko je velik’", "A ko mali", "Ja pa ja", "Ja pa ja"], ["Čekić kuje čelik misli", "Ko je bolji nek bolje smisli", "Kroz isti prozor gledamo", "U različitu stvar"], ["Džepovi su prazni", "A ljutnja oblači svoj frak"], ["Konac nam je pretanak", "Kanap debeo i dug", "Prodavcu nije bitno", "Da l’ si gospodin ili drug"], ["Pa gde je izlaz i rešenje", "Ma koga briga za probleme", "Za problem tvoj", "Za problem moj"], ["A sasvim malo svetla treba", "Da iz tame dođu stvari", "Stvari koje nikad", "Nisi video do sad"], ["Konac nam je pretanak", "Kanap debeo i dug", "Prodavcu nije bitno", "Da l’ si gospodin ili drug"], ["Oko nas sve siva lica", "Prešarena lica stvari", "A medu nama", "Mir i rat"], ["I gde god da okreneš glavu", "Luda glava je u pravu", "Pamet je na odmoru", "Dugo neće biti tu"], ["Konac nam je pretanak", "Kanap debeo i dug"]]}, {"title": "Predveče", "stanzas": [["Mislio sam", "Lako je pužu", "Zato što je mali", "Al’ neko ga je zgazio", "Na zelenoj travi"], ["Mislio sam", "Lako je cvetu", "Zato što miriše", "Al’ vetar je dunuo", "Ni njega nema više"], ["Mislio sam", "Lako je suncu", "Zato što sija", "Al’ njemu mora da je vruće", "Pa skuv’o bih se i ja"], ["Mislio sam", "Da ćeš doći", "U četvrtak veče", "Al’ ti ne dođe isto veče", "Već ti dođe", "Predveče"]]}, {"title": "U tvom malom svetu", "stanzas": [["Rodićeš se ovde", "Zbog ko zna kakvog dobra", "Sisaćeš mleko", "Bola svoje majke", "Rašćeš a da ne znaš", "Za hiljadu zašto", "I mislićeš da zemlji", "Dale su te rode", "Jer u tvom malom mestu", "O istini se ćuti", "I od kad znaš za sebe", "Sve gore je i gore"], ["Tek kad čuješ", "Prvi kamen na glavi", "Prvu krv kad vidiš", "Uplašićeš se jako", "I govoriće ti ćuti", "Sedi i ne plači", "Ti ćeš slušati laži", "Uplašen za zašto"], ["Jer u tvom malom mestu", "O istini se ćuti", "I od kad znaš za sebe", "Sve gore je i gore"], ["Čuvaće te anđeo", "Iznad magle tvoje tajne", "Ti ćeš mrzeti svaki", "Ožiljak na duši", "I tešiće te rečima – moglo je i gore", "I nikakav izbor", "Tad ti neće dati"], ["Jer u tvom malom svetu", "O istini se ćuti", "I od kad znaš za sebe", "Sve gore je i gore"], ["I u tvom malom svetu", "O istini se ćuti", "I od kad znaš za sebe", "Sve gore je i gore"]]}, {"title": "Prolog", "stanzas": [["Dok kisneš u dugom vremenskom intervalu", "A kapi spore i lake kiše ti padaju na glavu", "Mora da postoji dobar razlog", "Što se bez kišobrana tako nisko spuštaš", "Da hodaš retko popišanim ulicama", "Sam svoje administrativno strpljenje kušaš", "Uplatnica, prijavni list, rešenje, da platiš", "Da se prijaviš i da dobiješ lekarsko uverenje", "O tome kako si oboleo od administrativne groznice", "Prouzrokovane skromnom vremenskom nepogodom", "Uz nadu da će dijagnoza biti sunčanog karaktera"]]}, {"title": "Još jedan kišni dan", "stanzas": [["Još jedan kišni dan", "Želim da provedem sam", "Sa glavom u oblacima", "I rukama na grudima"], ["Da mislim", "Ko sam ja", "Gde si ti", "Ko smo mi", "Ko je kupio snove sve", "Kad ne sanjaš i brineš se"], ["I znaj", "Da dolazi kraj", "Za nas", "Predivan kraj", "Vodi u raj"], ["Ka nama", "Dolazi oblak ljut", "Gordo nam", "Staje na put", "Šta smo imali", "Nestalo je", "Ostaje samo pitanje, kako sada da pronađeš čas", "Gde iz srca da pustiš glas", "Prazan vazduh je između nas", "Na trenutke se čuje spas"], ["I znaj", "Da dolazi kraj", "Za nas", "Predivan kraj", "Vodi u raj"], ["Od nas odlazi oblak ljut", "Svetlost nam pada na put", "Umor u mislima, nadu, bes, jed i jad", "Šta sad možemo ti i ja", "Sa vezanim rukama", "Dok plešemo poraz naš", "Na trenutke se čuje spas"], ["I znaj", "Da dolazi kraj", "Za nas", "Predivan kraj", "Vodi u raj"]]}, {"title": "Jesen stiže u naš grad", "stanzas": [["Miš je mačku", "Pojeo za ručak", "Mrav je štiklom u", "Bio slona"], ["Cvet je pčeli", "Polomio žalac", "List je crva", "Smazao do pola"], ["Zima, leto treba da je sad", "A jesen stiže u naš grad", "Proleće je tu"], ["Kiša pala", "Osušila travu", "Vetar dun’o", "Ništa nije odneo"], ["Ljuti mesec", "Zamenio sunce", "Majka Zemlja", "Više nije tu"], ["Zima, leto treba da je sad", "A jesen stiže u naš grad", "Proleće je tu"], ["Ja to ne bih", "Voleo da vidim", "Mada gledam", "I mnogo se stidim"], ["Zbog toga mi", "U glavi maršira", "Horda ovih", "Konstatacija"], ["Zima, leto treba da je sad", "A jesen stiže u naš grad", "Proleće je tu"]]}, {"title": "Želeo sam kao mali", "stanzas": [["Želeo sam kao mali", "Što pre da odrastem", "Tražio sam prijatelja", "Tražio sam tebe"], ["Ceo svet je tada", "Bio mnogo, mnogo veći", "Nisam znao", "Da ću na pola puta", "Teški umor steći"], ["Tražio sam Novu Zemlju", "Nema je na karti", "Prijatelji moji", "Nisu nigde upisani"], ["Računi mi", "Mrse kosu", "Prestao sam", "Da se češljam", "Nemam sat", "Imam misao bosu", "Da me nosi", "Na kraj sveta"]]}, {"title": "Urbana paranoja", "stanzas": [["Svima nama", "Život visi o koncu", "Tu u samom", "Centru grada", "Okačen o žice", "Kroz koje", "Prolazi struja"], ["Trg je vikendom", "Uvek pun", "Organizatortog maskenbala", "Još uvek ne pokazuje svoje lice", "Jer visi, jer visi, jer visi, jer visi", "Obešen za glavu", "Sa kanapom", "Koji je vezan za žice", "Kroz koje", "Prolazi struja"], ["Al’ nađe se", "Po neki srećković", "Koji mu ugleda lice", "Prozbori sa njim dve, tri reči", "I gle čuda gle čuda", "Gle čuda i gle čuda", "I on završi obešen"], ["Sa kanapom", "Oko glave", "Koji svoj početak vidi", "Pričvršćen za žice", "Kroz koje", "Prolazi struja", "Prolazi struja", "Prolazi struja"]]}, {"title": "Bum!", "stanzas": [["Dete koje odrasta", "U čeličnoj kolevci", "Sa prenežnom kožom", "Pravoga čoveka", "Polako se pretvara", "U hladan čelik", "Novoga veka", "Polako se pretvara", "U hladan čelik", "Novoga veka"], ["San koji se sanja", "U fotelji kraj sefa", "Poluotvorenog", "Punog novca i zlata", "Polako se pretvara", "U noćnu moru snevača", "Polako se pretvara", "U noćnu moru snevača"], ["Misao koja", "Sama od sebe", "Ne može da stane", "Uperena", "U večite razlike ljudi", "Polako se pretvara", "U krvavi rat", "Sa kojim se", "Čitav svet svakoga jutra budi", "Sa kojim se", "Čitav svet svakoga jutra budi"], ["Senke i senke", "Čuda i čuda", "Reči i reči", "Sa puno truda", "Govore, pričaju priču", "O nama o vama", "O psima", "O lepom", "O ružnom", "Korak po korak po betonu", "Po travi vodi te", "Vodi na put", "Uz put koji je pravi", "Koji je pravi"], ["Oslušni", "Počuj sopstvenu krv", "Crvenu krv", "Kroz vene do srca", "Tamo se bije", "Tamo se puca", "Tamo se bije", "Tamo se puca"], ["Kažu metak u čelo", "Ako igraš pošteno", "Kažu metak u čelo", "Ako igraš pošteno"], ["Bum, bang"]]}, {"title": "Nikakav", "stanzas": [["Tvoj pogled sad je čist", "Tvoj dodir", "Lek", "Čime sam zaslužio", "Da te gledam", "Da te imam"], ["Tvoje usne", "Iskrenost", "Tvoj poljubac", "Mir", "Čime sam zaslužio", "Da te gledam", "Da te imam"], ["Sve tvoje što ostaje", "Kod mene", "Znam", "Moraš da ideš", "Sve na život miriše", "Na nadu koja", "Ubija strah", "Prastari strah", "U kostima", "Što prvim danom dobismo", "Svi i ti i ja", "Čime sam zaslužio", "Da te gledam", "Da te imam"], ["Ruke su mi prljave", "Svest mi je pomućena", "Vođen tajnim silama", "Kako to da te imam", "I dok tučem se za reč", "Sram obuzima me već", "Od izgubljenih bitaka", "Da pred tebe stanem ovakav – nikakav"]]}, {"title": "Poslednji slet", "stanzas": [["Jutros si sve probleme u paketu poslao na jug", "Sada gledaš u jednu tačku i moliš ih da ti se vrate", "Samo da prestaneš da se vrtiš u krug"], ["Ume l’ neko da otvori usta", "U autobusu sablasne boje", "Reci mi zašto ti je mržnja tako čvrsta", "Ka čoveku koji nikog ujeo nije"], ["Zašto se ti guraš u tramvaju", "Koincidencija da se bijemo sigurno nije", "Zar ne vidiš da smo k’o maslačci u maju", "Samo ljubav treba između njih da se krije"], ["Šta smo tu stali kad stanica nije", "Da nije u pitanju neki kvar", "I ovaj vozač sve svoje tajne krije", "Gde god se okreneš ista je stvar"], ["Svi ovi hologrami oko mene", "Lice na poslednji slet", "Zato sklanjam se sa strane", "Evo, sedi na moje mesto", "Ja se izvinjavam", "Moram da žurim", "Da ne zakasnim na let", "Izvin’te al’ ja žurim", "Da ne zakasnim", "Na let"]]}, {"title": "Žur smrti", "stanzas": [["Umorni", "Stariji od sebe", "Vuku se po asfaltu", "Sa štapom u glavi", "Što meri staru ulicu", "Bez želja što treba da nose", "Tišinu, spokoj i mir", "Pitanje da l su ičeg svesni", "Il’ sve je više sile hir"], ["Konobar vino točimo, za sve", "S kraja što vide viši cilj", "Verujem da u drugom činu", "Stvari će ići suprotno"], ["Neka vi ostanite", "Verni robovi vaših prevara", "Istinu pišu samo oni", "Koje život ne zavara"], ["A mi stojimo sa strane", "Uspravno tu žurku smrti snimamo", "I pitamo se dal’ ćemo sa druge strane", "Ikakav mir da nađemo"], ["I ja te gledam sa brigom", "Od sveta neizvesnosti", "Ti grliš me jako", "Rukama nežnosti"], ["Fajronat svak na svoju stranu", "Čuvajte glave nitkovi", "A ti, ti skrij se u kafanu", "Napolju kiša, metkovi"], ["Svet će još dugo da se vrti", "Bili mi tu ili ne", "Kad te pozovu na žur smrti", "Nikako ne ostavljaj sve"], ["A mi stojimo sa strane", "U strahu gde sebe sutra vidimo", "I pitamo da l’ ćemo sa druge strane", "Ikakav mir da nađemo"], ["I dok me gledaš sa brigom", "Od čuda neizvesnosti", "Ja grlim te jako", "Sa puno nežnosti", "Ti grliš me jako", "Rukama nežnosti"]]}, {"title": "Kako izgleda jutro", "stanzas": [["Braća se međ' sobom tuku", "Sestre za kosu vuku", "Deca smišljaju", "Novi veliki zijan"], ["Očevi se kolju", "Ko je veći Srbin", "Upali sveću", "I idi traži čoveka"], ["I kao da zvezde manje sjaje", "Mnogo manje nego juče", "Ceo svemir", "Kao da je mnogo ljut"], ["Ne izlazi", "Ćuti", "Ostani kod kuće", "Ručaj bol", "A tugu ostavi za večeru"], ["Pusti da sada", "Promeni juče", "Pusti da juče", "Odleti u zaborav", "Kad te pitaju", "Kako izgleda jutro", "Ti im reci", "Da nisi bila tu"], ["Pustili vesti", "A puštaju samo", "Loše vesti", "Jutros je", "Osvanuo divan dan"], ["A i to divno", "Preteruje silno", "I to divno", "Nije divno", "I tu se laži", "Uvuku pod kišobran"], ["I uši su ti slepe", "Dok slušaš bolove u glavi", "Za pesmu", "Nije pravi trenutak"], ["Dođi da gledam", "U tvoje oči", "Dok slušam drvo", "Kako diše", "Okruglu tugu", "Kriješ iza osmeha"], ["Pusti da sada", "Promeni juče", "Pusti da juče", "Odleti u zaborav", "Kad te pitaju", "Kako izgleda jutro", "Ti im reci", "Da nisi bila tu"]]}], "cover": "img/albumi/zemlja-snova.jpg"}, {"title": "Spusti svetlost na put", "year": 2019, "songs": [{"title": "2 minuta sreće, 3 minuta smisla", "stanzas": [["Povukao sam liniju na haos", "Za samo malo smisla", "Dok izumiremo sramno", "Sjaj na smetlištu blista", "Na godine straha zalepio sam tačke", "Iz svih usta i štampe", "Za malo čistog zraka", "Nek se neko drugi trese", "Nek nekog drugog plaše"], ["Pocepao diplomu uz flašu dobrog vina", "Menjao tablete za čašu viskija", "Vežbam se na dimu", "Da budem na vodi", "Šta još mogu da učinim", "Da opet budem na slobodi", "Bar na dva minuta sreće", "Za tri minuta smisla"], ["Zalepio sam sedmicu na haos", "Za tri minuta smisla", "I slušam kako svoju senku", "Vešto kriješ ispred sebe", "Čekam da se vratiš", "Daleko si od mene", "Sutra moram biti bolji", "Moram biti pored tebe", "Bar na dva minuta sreće", "Za tri minuta smisla"]]}, {"title": "Nizbrdo pravo", "stanzas": [["Fascikla! fascikla!", "Gde je moja fascikla?", "Fascikla u glavi", "A glava u torbi", "Taksista! taksista!", "Brže malo taksista", "Kad smo stali?", "Što smo stali?", "Koliko je sati?", "Skretali smo desno", "Skretali smo levo", "Vozi sve do kralja Milana", "Pa nizbrdo pravo"], ["Komšija! komšija!", "Eno ga moj komšija", "I on kasni na posao", "Tako mu i treba", "Kakva ženska zebru gazi", "Ne okreći se taksista", "Vide l’ ovo komšija?", "Nemam vremena za kafu", "Pantalone na banderama", "Šta ću sad za doručak?", "Gas do kralja Milana", "Pa nizbrdo pravo"], ["Jelena, Milena", "Ja te mnogo volim Ivana", "Taksista daj gas", "Da ne dobijem otkaz", "Marija, Ana", "Lepo mi je rekla mama", "Da ustajem ranije", "Da pijem tanju kafu", "Taksista! komšija!", "Na pos’o kasnim komšija", "Gas do kralja Milana", "Pa nizbrdo pravo"], ["Propalo! propalo!", "Kvalitetno propalo", "Sat i po u koloni", "Šta sad reći šefu?", "Šefa vrte milioni", "Joj kakva sekretarica!", "Danas radim u tri smene", "Treću opet u kafanu", "Partija! partija!", "Uništi nas partija", "Gas do kralja Milana", "Pa nizbrdo pravo"], ["Fascikla! fascikla!", "Gde je moja fascikla?", "Fascikla u glavi", "A glava u torbi", "Taksista! taksista!", "Brže malo taksista", "Kad smo stali?", "Što smo stali?", "Koliko je sati?", "S uma skretali smo desno", "Skretali smo levo", "Vozi sve do kralja Milana", "Pa nizbrdo", "Pravo! bravo! pravo! bravo", "Živeli! bravo! pravo! Bravo"]]}, {"title": "Stoj kolega!", "stanzas": [["Stiže nova garnitura, nameštaj, drvena galanterija, tišljeraj, žižak staru pesmu poji uz pratnju bande crvotočina, braća po ko zna čemu, kravati? prljavim rukama? sa đavolom eksport-import punjači i mnoštvo alkalnih baterija. tako se smenjuju, menjaju mesta kako se kome isprazni, a prljavi biznis unapred cveta i širi virus zarazni:"], ["— koolega!", "— dobar dan!", "— dobar dan kolega, kako ste?", "— da l’ me utisak vara al’ danas baš sveže izgledate?", "— hvala! od kad je Kriminalić dobio fotelju", "Svi moji strahovi prestaše…", "— zahvalite kolegi Izdajiću na tome, ja nemam ništa s tim, nego večeras u osam, restoran ,,Grad’’, svečani ručak, inauguracija. bićete tamo?", "— biću!", "— slušajte mene i držite jezik za zubima…", "— ma nema problema, vi bar znate, kad treba da ćutim ja ćutim, kad treba da govorim, ja govorim, baš kao sa našim kapitalom, čas ga vidiš, čas ga ne vidiš", "— ijaooj kolega! vrlo duhovito, koolega!", "Jaooj kolega! joj kolega! ajj!"], ["— nego šta ćemo s kolegom Mutljavićem?", "— neka to, ja ću da vidim s njim, preko Osvetića, Bankarića, Ubicića…", "— znaš bre čiji je on sin?", "— znam, nego mene brine kolega Promenić, taj čovek se menja kao dan, padne kiša, a on mokar, greje sunce, a on suv. umesto obratno kolega!", "Kao ti i ja kolega! kao ja i ti kolega! kao mi kolega! ajj!"], ["— nego, šta ćeš da piješ, da jedeš, čime da te poslužim? sok, kafa, espreso, viski, vodka? rakija il’ džin?", "— ta može viski, još ako je Balantajns pa da me na Kulturića podseti…", "— e, to ti je pos’o daš mu sto evra i flašu", "A on ispari kao dim…", "— ma s njim uopšte nemamo problema", "Malo je čudan al’ je fin, nego može viski?", "— može!", "— evo, stiže sekretarica, Veeera! Vera je inače u drugom stanju! Veera! moram da je otpustim, Veeera!", "— moolliiimm!", "— Veeera, dva viskija!"], ["— e moj Loviću, propade država a mi jaki kao nikad do sad", "— a ovi?", "— ni ovi", "— a oni?", "— ni ti, niko nam sad, ama baš niko ništa ne može, izvućićemo mi mutant-deficit u ovoj paraevrodolarodinarofuntomaniji, znaš kako kaže naš kolega Licemerić — danas si budala ako si fin", "— ma teraj ga u tri lepe tačke, taj stari kučkin sin", "— ma pusti to, najgore je prošlo,u zadnji čas smo okrenuli kormilo, sad je potpuno svejedno u koji anusni otvor glavu guramo, ja u tvoj, ti u moj, ti u moj, ja u tvoj…"], ["— hahaaaa, kolega! vrlo duhovito, kolega!", "Gde je taj viski? Veeera! Veeraa! stižee!"], ["— idem sad, moram da žurim, treba da dajem neke izjave, oko onoga smo se dogovorili pa kako ispadne", "— ma, budi spokojan bez brige, samo sekund", "Pričekaj, moram u toalet, krenućemo zajedno", "Imam neka neraščišćena posla, treba da sam u sudu do devet… samo sekund kolega! popij viski, kolega! brzo ću ja kolega! ijaaoooj kolega? ajj!"], ["Dosta je bilo! ovoj priči, napokon, došao je kraj, samo da naglasim da je kolega Lović", "Trebao kolegu Firmića, iz toaleta, da sačeka", "Međutim on je krenuo, ne znam zašto, znaš li ti? znam samo da nakon bešumnog rada vodokotlića, mogao se više puta čuti glas:", "— stoooj kolega!"]]}, {"title": "Sklonio sam se od ljudi", "stanzas": [["Sklonio sam se od ljudi", "U društvu uglavnom prazne priče", "Svi glume da su ludi", "Svako na svakoga viče"], ["Svi pričaju uglas", "I svako je u pravu", "Ćutim i pitam se", "Kada će doći taj čas", "Kad će jedni drugima", "Ponovo razneti glave"], ["Ali sve se u krug vrti", "Stane, odmori", "Pa opet krene", "Suviše predvidivo", "Dosadno"]]}, {"title": "Pad u ljigu", "stanzas": [["Evo već deset godina zaglavljen u Ljigu", "Na putu za veliki sivi grad", "Konobar uredno toči pića", "Ispravlja stvarnost", "Gospodin dotični tek sad shvata", "Da više nije tako mlad"], ["Kafana, stanica, monolog", "Gde sam izgubio cilj?", "Kako je inertnost pomutila misli?", "Kad sam napuštao svoj dom", "Jasno sam video svetlo", "Na kraju tunela", "Zašto se moja želja za letom", "Pretvorila u pad?"], ["Pa i moj prijatelj je želeo da leti visoko", "Biciklom da se provoza oko Meseca", "Sve što je dobio bilo je prst u oko", "Šaku tableta kada leže", "Šaku tableta kad se budi", "I obavezna kontrola svakog meseca", "Zašto se njegova želja za letom", "Pretvorila u pad?"], ["Ne, više ne verujem nikom", "Sem Glavnoj pošti iz Gornje Firme", "Svi razgovori za stolom", "Bili su glupi i prazni", "Đavo se vešto u monolog zavuče", "Jednom istinom te mami", "Da ti slepi trista laži", "Da bi se tvoja želja za letom", "Pretvorila u pad"], ["Zato sam konobaru rekao – Račun, molim!", "Sve što sam popio duplo sam platio", "I odvezao sam pertle i pustio da me nose", "Dok ne progledam gde sam", "Dok se ne setim ko sam", "A do tad će po betonu moja senka da vesla", "Na putu za veliki, na putu za veliki", "Na putu za veliki sivi grad"]]}, {"title": "U Istanbul", "stanzas": [["Da li bi pošla sa mnom", "U Istanbul", "Da li bi pošla sa mnom", "U Istanbul"], ["Sa prvim zrakom sunca", "U pola kapi rose", "Da li bi pošla sa mnom", "U Istanbul"], ["Ići ćemo dalje", "Preko granica", "Za seme naših snova", "Nova Zemlja"], ["Da li bi pošla sa mnom", "U Istanbul"]]}, {"title": "Rolaj", "stanzas": [["Dubinom tamne strane duše vreba pitanje", "Hoćeš li da ubiješ ili da budeš ubijen", "Demone čiji rad odnekud pokrene", "Iskušenje da u biti burno deluje"], ["Blesak čuđenja i ludo nesvrstavanje", "Godine i dani bdenja pod zemljom prevare", "Što vrlu moć ideja u ogledalu", "Od sveta krije i od svetla sklanja te"], ["Rolaj, rolaj, rolaj, rolaj"], ["Znam da lako padam, znam da teže ustajem", "Slamka spasa gde uraste hvatam se", "Za ruke koje grade kulise obmane", "Iza kojih strahote istine mame da ih otkrijem"], ["Prijatelj ti šapne, ne presuđuje", "Nad igrom lutanja u lavirintu linije", "Pod kožom prolaznom duboko je i mučno je", "Čas se bliži da te umom dodirnem"], ["Rolaj, rolaj, rolaj, rolaj", "Rolaj, rolaj, rolaj, Lorelaj"], ["Daleko od mene zar ne primećuje", "Veliko ništa kada svojom senkom prekrije", "U svili tajne pali svet materije", "Naša bit je beskraj u oluji iluzije"]]}, {"title": "Mama kupi mi propeler", "stanzas": [["Mama kupi mi propeler", "Da odem daleko odavde", "Svi koje znam su odavno, mama", "Odleteli preko grane", "Odleteše Dragana i Darko", "Sad lete Marija i Džoni", "Svak’ ko je imao propeler, mama", "Radio je stvar po pravoj volji", "Ovde je mračno i svetla se gase", "I duše izjeda vrela stud", "Boga su prognali iz hrama, mama", "Molim? šta? kako? kad? I kud", "U mržnju je neko stavio kvasac", "Normalnom po čelu piše lud", "U fotelji sve prasac do prasca, mama", "Što pre da odem bilo kud", "Ta sine šta će ti propeler", "Kad ti još na zemlji nisi", "I vreme trošiš u jonosferi, sine", "U kafani “Blue”, ti slušaš bluz", "Čujem da radiš za Gornju Firmu", "Da nemaš platu, radiš za etar", "Ta tebi ne treba propeler, sine", "Kad ti već letiš na vetar"]]}, {"title": "Zašto su tvoje oči prazne", "stanzas": [["Sad kad imaš dobar izgled", "Sad kad imaš skoro sve", "Dok gledaš svoje telo", "Kažeš da znaš šta bi i gde", "Skrivaćeš svoje lice", "Skupljaću tvoje suze", "Nema pitanja, nema kazne", "Zašto su tvoje oči prazne"], ["Gde izgubljena stojiš", "Na štiklama ili bez njih", "Sa novom kožom u ruci", "U tuđoj ambiciji", "Protiv čega? za život", "Reći ću nešto, reći ćeš – ne", "Nema pitanja, nema kazne", "Zašto su tvoje oči prazne"], ["Prva želja da te gledam", "Očima malog pesnika", "Druga želja da te ljubim", "Kako si sebe ljubila", "Sve su to gluposti i bajke", "Koliko zaradiš toliko si lep", "Nema pitanja, nema kazne", "Zašto su tvoje oči prazne"], ["Za prošlošću ne žalim", "Možda ponekad, samo na tren", "Pred pitanjima stojim", "Dok se cepa nerv po nerv", "Vodio bih ljubav s tobom", "Da nismo izgubili reč", "Nema pitanja, nema kazne", "Zašto su tvoje oči prazne"]]}, {"title": "Svetle stvari", "stanzas": [["Svetle su stvari", "Pod ovom tamnom zemljom", "Pod ovom tamnom zemljom", "Sve što nosi trunku zlata", "Na samom je dnu"], ["Noktima kopam", "Sedam noći i sedam dana", "Sedam noći i sedam dana", "Tražim zrno razloga da ustanem"], ["Da nastavim put", "Da postanem živ", "Da te ponovo nađem"], ["Da te čujem u sebi", "Da me vidiš u sebi", "Da ispuniš prazninu", "Jer više ne znam ni gde bih", "Ni s kim bih, ni kud"], ["Da li me čekaš", "Da li znaš da postojiš", "Da li te poznaje stvarnost", "Ili si samo opsena u mislima", "Moram da nastavim put", "Da postanem živ", "Da te ponovo nađem"], ["Sa krunom u glavi", "Rođen sam u blatu", "Rođen sam u blatu", "Već sedam puta ubijen", "A opet bih rođenje", "Da postanem živ"], ["Mučnina sveta", "Nosi me daleko", "Odnesi me daleko", "Svuda je prazno", "I ništa za ništa", "Prodaje i kupuje"], ["Moram da nastavim put", "Da postanem živ", "Da te ponovo nađem"], ["Sklonjeni u stranu", "Divljak može da igra", "Budala da blesi", "Žena u koži", "Gleda u kost"]]}, {"title": "U mraku strah", "stanzas": [["U mraku strah, ljudi u njemu", "Crne su zavese zatvorile beli grad", "Ne vidi se niko i ne čuje ništa", "Miris novog doba diše stari smrad"], ["I gospodin se nosi mišlju, da ga ne bude više", "Na prvoj stranici ređa slog po slog", "Kaže da ovde ne može više da se diše", "Kad vazduh drže magla dim i smog"], ["Kad sve stalo je bez srca, sa dva roga na glavi", "Ni vetrom ne čuje da postoji važan glas", "Množina ne prepoznaje u jednini idiota", "Mali brige brinu samo za svoj spas"], ["Jutrom ne vidiš početak a i noć nije mirna", "Radnim danima krvav je trotoar", "Vikendom se sa ulice čuje vika", "Navijači traže Dišanov pisoar"], ["Sve što sam čuo da mi kažeš, tvoje ogledalo o sebi", "Kuga mraka je pala na ime i čast", "Da se pomerim iz mesta, a da ne gazim po tebi", "Dok grliš svoju prevaru i laž"], ["Nad kojom čvrsto stoji geslo poniziti čoveka", "Vrhom vrednosti gde rđa je i očaj", "Umivanje u sopstvenom strašnom sudu", "Dok početak svetlost ostavlja za kraj"], ["Sada zbogom tvojoj vlasti i mom ropstvu u tišini", "Tvojim maskama i licima monstruma", "Zbogom težnji prema smrti kroz težnju ka visini", "Zbogom zauvek, ja tražim novi dan"]]}, {"title": "Spusti svetlost na put", "stanzas": [["Zid je sakrio mnoga siva lica", "Teški za oprost metak i ekser", "Jasno se čuje gde je mržnji klica", "Ovde je mračno", "Spusti svetlost na put"], ["Dan je sagoreo i ulice su puste", "Disao sam smrad sa mirisom parfema", "Sada stojim pred vratima šume", "Ovde je mračno", "Spusti svetlost na put"], ["Rekli su – na kolena! I pustićemo da preživiš", "Stavi lance, veseli se i pleši", "Tvoje usne su napisale – beži", "Ovde je mračno", "Spusti svetlost na put"], ["Od tebe daleko, a kao da si tu", "Pisma misli šalješ s drugog kraja šume", "U njima piše da čekaćeš i više", "Ovde je mračno", "Spusti svetlost na put"], ["Ostao sam sam i prijatelja nemam", "Nazad ne mogu, napred da idem moram", "Daj mi snage da izdržim do početka", "Ovde je mračno", "Spusti svetlost na put"], ["Ne mogu da ćutim i sve ću da ti kažem", "Kad me umiju prvi zraci sunca", "Sve sam stavio na trunku smisla u daljini", "Ovde je mračno", "Spusti svetlost na put"]]}], "cover": "img/albumi/spusti-svetlost-na-put.jpg"}]</script>
+<script>
+(function(){
+  var albums = JSON.parse(document.getElementById('data').textContent);
+  var albumsEl = document.getElementById('albums');
+  var mainEl = document.getElementById('main');
+  var lyricEl = document.getElementById('lyric');
+  var phone = window.matchMedia('(max-width:700px)');
+  var current = null, hoverTimer = null;
+
+  function plural(n, one, few, many){
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+  function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function slug(s){
+    var map = {'č':'c','ć':'c','š':'s','ž':'z','đ':'dj'};
+    return s.toLowerCase().replace(/[čćšžđ]/g, function(c){ return map[c]; })
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+
+  var total = 0;
+  albums.forEach(function(a){ total += a.songs.length; });
+  document.getElementById('count').textContent =
+    albums.length + ' ' + plural(albums.length,'album','albuma','albuma') + ' · ' + total + ' ' + plural(total,'pesma','pesme','pesama');
+
+  /* Harmonika */
+  albums.forEach(function(a, ai){
+    var sec = document.createElement('section');
+    sec.className = 'album';
+    var listId = 'songs-' + ai;
+    sec.innerHTML =
+      '<button class="album-head" id="album-' + ai + '" aria-expanded="false" aria-controls="' + listId + '">' +
+        '<img src="' + a.cover + '" alt="Omot albuma ' + esc(a.title) + '" width="120" height="120">' +
+        '<span class="album-meta"><strong>' + esc(a.title) + '</strong><span>' + a.year + ' · ' + a.songs.length + ' ' + plural(a.songs.length,'pesma','pesme','pesama') + '</span></span>' +
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>' +
+      '</button>' +
+      '<div class="songs-wrap" id="' + listId + '"><div><ol class="songs"></ol></div></div>';
+    var ol = sec.querySelector('.songs');
+    a.songs.forEach(function(s, si){
+      s.id = slug(s.title);
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.className = 'song';
+      b.type = 'button';
+      b.textContent = s.title;
+      b.dataset.a = ai; b.dataset.s = si;
+      li.appendChild(b); ol.appendChild(li);
+    });
+    sec.querySelector('.album-head').addEventListener('click', function(){ toggleAlbum(ai); });
+    albumsEl.appendChild(sec);
+  });
+
+  function setOpen(ai, open){
+    var sec = albumsEl.children[ai];
+    sec.classList.toggle('open', open);
+    sec.querySelector('.album-head').setAttribute('aria-expanded', open ? 'true' : 'false');
+    sec.querySelectorAll('.song').forEach(function(b){ b.tabIndex = open ? 0 : -1; });
+  }
+  function toggleAlbum(ai){
+    var willOpen = !albumsEl.children[ai].classList.contains('open');
+    for (var i = 0; i < albums.length; i++) setOpen(i, i === ai && willOpen);
+    if (willOpen && !phone.matches && (!current || current.a !== ai)) show(ai, 0);
+  }
+
+  function render(ai, si){
+    var a = albums[ai], s = a.songs[si];
+    var lines = 0;
+    s.stanzas.forEach(function(st){ lines += st.length + 1; });
+    lyricEl.innerHTML =
+      '<p class="eyebrow">' + esc(a.title) + ' · ' + a.year + '</p>' +
+      '<h2>' + esc(s.title) + '</h2>' +
+      '<div class="rule"></div>' +
+      '<div class="verses' + (lines > 44 ? ' long' : '') + '">' +
+        s.stanzas.map(function(st){ return '<p>' + st.map(esc).join('<br>') + '</p>'; }).join('') +
+      '</div>';
+    lyricEl.classList.remove('swap'); void lyricEl.offsetWidth; lyricEl.classList.add('swap');
+  }
+
+  function mark(ai, si){
+    albumsEl.querySelectorAll('.song').forEach(function(b){
+      b.setAttribute('aria-current', (+b.dataset.a === ai && +b.dataset.s === si) ? 'true' : 'false');
+    });
+  }
+
+  function show(ai, si){
+    if (current && current.a === ai && current.s === si) return;
+    current = {a: ai, s: si};
+    mark(ai, si);
+    render(ai, si);
+    if (phone.matches) {
+      var btn = albumsEl.querySelector('.song[data-a="' + ai + '"][data-s="' + si + '"]');
+      btn.parentNode.appendChild(lyricEl);
+    } else {
+      if (lyricEl.parentNode !== mainEl) mainEl.appendChild(lyricEl);
+      if (window.scrollY > 0) window.scrollTo(0, 0);
+    }
+    try { history.replaceState(null, '', '#' + albums[ai].songs[si].id); } catch(e) {}
+  }
+
+  function hide(){
+    current = null;
+    mark(-1, -1);
+    lyricEl.innerHTML = '';
+    if (lyricEl.parentNode !== mainEl) mainEl.appendChild(lyricEl);
+  }
+
+  /* Prelazak mišem prikazuje tekst; klik (dodir, tastatura) takođe */
+  albumsEl.addEventListener('pointerover', function(e){
+    if (e.pointerType !== 'mouse' || phone.matches) return;
+    var b = e.target.closest('.song'); if (!b) return;
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(function(){ show(+b.dataset.a, +b.dataset.s); }, 90);
+  });
+  albumsEl.addEventListener('pointerout', function(e){
+    if (e.target.closest('.song')) clearTimeout(hoverTimer);
+  });
+  albumsEl.addEventListener('click', function(e){
+    var b = e.target.closest('.song'); if (!b) return;
+    var ai = +b.dataset.a, si = +b.dataset.s;
+    if (phone.matches && current && current.a === ai && current.s === si) { hide(); return; }
+    show(ai, si);
+    if (phone.matches) b.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth'});
+  });
+  albumsEl.addEventListener('focusin', function(e){
+    var b = e.target.closest('.song');
+    if (b && !phone.matches) show(+b.dataset.a, +b.dataset.s);
+  });
+
+  /* Promena širine ekrana: tekst se vraća u desnu kolonu ili ide ispod pesme */
+  phone.addEventListener('change', function(){
+    if (!current) { if (!phone.matches) show(0, 0); return; }
+    var c = current; current = null; show(c.a, c.s);
+  });
+
+  /* Početno stanje: link sa #pesma ili prva pesma najstarijeg albuma */
+  var start = {a: 0, s: 0}, h = (location.hash || '').slice(1);
+  if (h) albums.forEach(function(a, ai){ a.songs.forEach(function(s, si){ if (s.id === h) start = {a: ai, s: si}; }); });
+  for (var i = 0; i < albums.length; i++) setOpen(i, i === start.a);
+  if (!phone.matches || h) show(start.a, start.s);
+})();
+</script>
+</body>
+</html>

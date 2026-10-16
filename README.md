@@ -6,6 +6,7 @@ Naslovna stranica sajta kantautora i slikara Kralja Čačka.
 
 ```
 index.html        naslovna stranica (HTML + CSS u jednom fajlu)
+tekstovi.html     stranica TEKSTOVI (albumi, pesme i tekstovi su u samoj stranici)
 img/
   hero.jpg        pozadinska fotografija
   logo.webp       logo
@@ -13,7 +14,13 @@ img/
   muzika.jpg      slika za sekciju MUZIKA
   tekstovi.jpg    slika za sekciju TEKSTOVI
   slikarstvo.jpg  slika za sekciju SLIKARSTVO
+  albumi/         omoti albuma za stranicu TEKSTOVI
 ```
+
+## Dodavanje pesama
+
+Tekstovi su u `tekstovi.html`, u bloku `<script type="application/json" id="data">`.
+Svaki album ima `title`, `year`, `cover` i spisak `songs`; svaka pesma ima `title` i `stanzas` (strofe kao nizovi stihova).
 
 ## Objavljivanje preko GitHub Pages
 
@@ -23,5 +30,5 @@ img/
 
 ## Šta treba dopuniti
 
-- Linkove ka profilima (Instagram, Facebook, Patreon, YouTube, Spotify, Apple Music) u `index.html` — trenutno vode na početne stranice servisa.
-- Linkove sekcija (`#vesti`, `#muzika`, `#tekstovi`, `#slikarstvo`, `#bio`) kada budu napravljene podstranice.
+- Linkove ka profilima (Instagram, Facebook, Patreon, YouTube, Spotify, Apple Music) u `index.html` i `tekstovi.html` — trenutno vode na početne stranice servisa.
+- Stranice `vesti.html`, `muzika.html`, `slikarstvo.html` i `bio.html` — linkovi već vode na njih, ali još ne postoje.
